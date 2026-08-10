@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "products")
 @Getter
@@ -61,8 +63,6 @@ public class Product {
     @Column(nullable = false)
     private LocalDate manufacturedDate;
 
-    private LocalDate expiryDate;
-
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -72,8 +72,10 @@ public class Product {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<SaleItem> saleItems;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<PurchaseItem> purchaseItems;
 }

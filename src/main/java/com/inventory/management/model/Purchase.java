@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "purchases")
 @Getter
@@ -29,6 +31,7 @@ public class Purchase {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "purchase")
     private List<PurchaseItem> purchaseItems;
 }

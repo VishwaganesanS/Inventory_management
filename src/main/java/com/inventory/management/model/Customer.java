@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "customers")
 @Getter
@@ -41,5 +43,6 @@ public class Customer {
     private String address;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Sale> sales;
 }

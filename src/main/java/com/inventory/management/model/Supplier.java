@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "suppliers")
 @Data
@@ -25,11 +27,6 @@ public class Supplier {
     @Size(min = 3, max = 50)
     @Column(nullable = false)
     private String supplierName;
-
-    @NotBlank(message = "Contact person should not be blank")
-    @Size(min = 3, max = 50)
-    @Column(nullable = false)
-    private String contactPerson;
 
     @NotBlank(message = "Company name should not be blank")
     @Size(min = 3, max = 100)
@@ -49,8 +46,10 @@ public class Supplier {
     private String address;
 
     @OneToMany(mappedBy = "supplier")
+    @JsonIgnore
     private List<Product> products;
 
     @OneToMany(mappedBy = "supplier")
+    @JsonIgnore
     private List<Purchase> purchases;
 }
