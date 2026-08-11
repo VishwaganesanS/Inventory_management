@@ -34,4 +34,15 @@ public class SaleController {
         saleService.deleteSale(id);
         return "Sale deleted successfully";
     }
+
+    @PutMapping("/{id}/recalculate")
+    public Sale recalculateSaleTotal(@PathVariable Integer id) {
+        return saleService.recalculateSaleTotal(id);
+    }
+
+    @PutMapping("/{id}")
+    public Sale updateSale(@PathVariable Integer id,
+            @RequestBody Sale sale) {
+        return saleService.updateSale(id, sale);
+    }
 }

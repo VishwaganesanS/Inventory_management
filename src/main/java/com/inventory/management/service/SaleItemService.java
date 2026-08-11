@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.inventory.management.model.SaleItem;
 import com.inventory.management.repository.SaleItemRepository;
+import com.inventory.management.repository.SaleRepository;
 
 import java.time.LocalDateTime;
 
 import com.inventory.management.model.InventoryTransaction;
 import com.inventory.management.model.Product;
+import com.inventory.management.model.Sale;
 import com.inventory.management.repository.InventoryTransactionRepository;
 import com.inventory.management.repository.ProductRepository;
 
@@ -25,6 +27,9 @@ public class SaleItemService {
 
     @Autowired
     private InventoryTransactionRepository inventoryTransactionRepository;
+
+    @Autowired
+    private SaleRepository saleRepository;
 
     public SaleItem addSaleItem(SaleItem saleItem) {
 
@@ -64,7 +69,17 @@ public class SaleItemService {
             inventoryTransactionRepository.save(transaction);
         }
 
+        Sale sale = savedSaleItem.getSale();
+
+        List<SaleItem> saleItems = saleItemRepository.findBySale_SaleId(sale.getSaleId());
+        double total = 0;
+        for (SaleItem item : saleItems) {
+            total += item.getQuantity() * item.getSellingPrice();
+        }
+        sale.setTotalAmount(total);
+        saleRepository.save(sale);
         return savedSaleItem;
+
     }
 
     public List<SaleItem> getAllSaleItems() {

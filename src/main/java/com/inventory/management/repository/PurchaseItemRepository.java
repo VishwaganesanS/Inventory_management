@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.inventory.management.model.PurchaseItem;
 
-public interface PurchaseItemRepository extends JpaRepository<PurchaseItem, Integer> {
+import java.util.List;
 
+public interface PurchaseItemRepository extends JpaRepository<PurchaseItem, Integer> {
+    List<PurchaseItem> findByPurchase_PurchaseId(Integer purchaseId);
 }

@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.inventory.management.model.PurchaseItem;
 import com.inventory.management.repository.PurchaseItemRepository;
+import com.inventory.management.repository.PurchaseRepository;
 
 import java.time.LocalDateTime;
 
 import com.inventory.management.model.InventoryTransaction;
 import com.inventory.management.model.Product;
+import com.inventory.management.model.Purchase;
 import com.inventory.management.repository.InventoryTransactionRepository;
 import com.inventory.management.repository.ProductRepository;
 
@@ -26,6 +28,9 @@ public class PurchaseItemService {
 
     @Autowired
     private InventoryTransactionRepository inventoryTransactionRepository;
+
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     public PurchaseItem addPurchaseItem(PurchaseItem purchaseItem) {
 
@@ -51,6 +56,30 @@ public class PurchaseItemService {
 
             inventoryTransactionRepository.save(transaction);
         }
+
+        Purchase purchase = savedPurchaseItem.getPurchase();
+        List<PurchaseItem> purchaseItems = purchaseItemRepository.findByPurchase_PurchaseId(purchase.getPurchaseId());
+        double total = 0;
+
+        for (PurchaseItem item : purchaseItems) {
+
+            System.out.println("Purchase Item ID = " + item.getPurchaseItemId());
+            System.out.println("Quantity = " + item.getQuantity());
+            System.out.println("Purchase Price = " + item.getPurchasePrice());
+
+            double itemTotal = item.getQuantity() * item.getPurchasePrice();
+
+            System.out.println("Item Total = " + itemTotal);
+
+            total += itemTotal;
+        }
+
+        System.out.println("FINAL PURCHASE TOTAL = " + total);
+
+        purchase.setTotalAmount(total);
+        purchaseRepository.save(purchase);
+        purchase.setTotalAmount(total);
+        purchaseRepository.save(purchase);
 
         return savedPurchaseItem;
     }
