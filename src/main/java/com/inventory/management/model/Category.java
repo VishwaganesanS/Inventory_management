@@ -24,7 +24,6 @@ public class Category {
     @Size(min = 3, max = 50)
     @Column(nullable = false, unique = true)
     private String categoryName;
-
     @Column(length = 200)
     private String Description;
 
